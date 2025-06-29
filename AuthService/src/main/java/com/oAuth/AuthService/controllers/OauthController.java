@@ -1,4 +1,4 @@
-package com.oAuth.AuthService;
+package com.oAuth.AuthService.controllers;
 
 import java.util.Map;
 
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
-public class UserController {
+public class OauthController {
 
     @GetMapping("/user-data")
     public Map<String, Object> getUserInfo(@AuthenticationPrincipal OAuth2User principal) {
@@ -25,4 +25,5 @@ public class UserController {
 
         );
     }
+
 }
