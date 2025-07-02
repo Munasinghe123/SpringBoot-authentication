@@ -64,7 +64,7 @@ public class UserController {
                     new UsernamePasswordAuthenticationToken(email, password));
 
             UserModel user = userService.findUser(email);
-            String jwt = jwtConfig.generateToken(user.getEmail(), user.getName(), "USER");
+            String jwt = jwtConfig.generateToken(user.getEmail(), user.getName(), "student");
 
             Cookie cookie = new Cookie("token", jwt);
             cookie.setHttpOnly(true);

@@ -4,8 +4,12 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
@@ -16,16 +20,26 @@ import javax.crypto.SecretKey;
 
 @Component
 public class JwtConfig {
-    // Generate a secure key (consider moving to application.properties in production)
-    private final SecretKey SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+   
+    @Value("${jwt.secret}")
+    private String secretString;
+
+    private SecretKey SECRET_KEY;
+
     private final long EXPIRATION_TIME = 1000 * 60 * 60 * 10; // 10 hours
+
+     @PostConstruct
+    public void init() {
+        // Convert string to HMAC-SHA compatible key
+        SECRET_KEY = Keys.hmacShaKeyFor(secretString.getBytes(StandardCharsets.UTF_8));
+    }
 
     public String generateToken(String email, String name, String role) {
     Map<String, Object> claims = new HashMap<>();
     claims.put("email", email);
     claims.put("name", name);
     claims.put("role", role);
-    return createToken(claims, email); // subject is still email
+    return createToken(claims, email); 
 }
 
 
@@ -54,10 +68,10 @@ public class JwtConfig {
 
    public Claims extractAllClaims(String token) {
     return Jwts.parser()
-            .verifyWith(SECRET_KEY)  // Changed from setSigningKey() to verifyWith()
+            .verifyWith(SECRET_KEY)  
             .build()
-            .parseSignedClaims(token)  // Changed from parseClaimsJws() to parseSignedClaims()
-            .getPayload();            // Changed from getBody() to getPayload()
+            .parseSignedClaims(token)  
+            .getPayload();           
 }
     public Boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());

@@ -1,11 +1,16 @@
-import { useEffect } from 'react';
+import { useEffect,useRef } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 export default function OAuthCallback() {
   const navigate = useNavigate();
+  const hasRun = useRef(false);;
 
   useEffect(() => {
+
+    if (hasRun.current) return; 
+    hasRun.current = true;
+
     async function fetchUserAndCheckEmail() {
       try {
         const response = await axios.get("http://localhost:8080/user-data", { withCredentials: true });
@@ -23,7 +28,7 @@ export default function OAuthCallback() {
     }
 
     fetchUserAndCheckEmail();
-  }, [navigate]);
+  }, []);
 
-  return <div>Loading...</div>;
+  return( <div>Loading...</div>);
 }

@@ -14,6 +14,7 @@ function DashBoarad() {
                 let response = await axios.get("http://localhost:8080/auth/me", { withCredentials: true });
                 if (response.status === 200) {
                     setUser(response.data);
+                    console.log(response.data);
                     return;
                 }
             } catch { }
@@ -22,6 +23,7 @@ function DashBoarad() {
                 let response = await axios.get("http://localhost:8080/user-data", { withCredentials: true });
                 if (response.status === 200) {
                     setUser(response.data);
+                    return;
                 }
             } catch { }
         };
@@ -46,6 +48,7 @@ function DashBoarad() {
                 user ? (<>
                     <p>{user.name}</p>
                     <p>{user.email}</p>
+                    <p>{user.role}</p>
                     <p><img src={user.photo} alt="photo" width={80} /></p>
                 </>
                 ) : (
