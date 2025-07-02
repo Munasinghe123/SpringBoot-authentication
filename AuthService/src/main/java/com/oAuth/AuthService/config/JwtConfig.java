@@ -20,10 +20,14 @@ public class JwtConfig {
     private final SecretKey SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS512);
     private final long EXPIRATION_TIME = 1000 * 60 * 60 * 10; // 10 hours
 
-    public String generateToken(String username) {
-        Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, username);
-    }
+    public String generateToken(String email, String name, String role) {
+    Map<String, Object> claims = new HashMap<>();
+    claims.put("email", email);
+    claims.put("name", name);
+    claims.put("role", role);
+    return createToken(claims, email); // subject is still email
+}
+
 
     private String createToken(Map<String, Object> claims, String subject) {
         return Jwts.builder()
@@ -48,7 +52,7 @@ public class JwtConfig {
         return claimsResolver.apply(claims);
     }
 
-   private Claims extractAllClaims(String token) {
+   public Claims extractAllClaims(String token) {
     return Jwts.parser()
             .verifyWith(SECRET_KEY)  // Changed from setSigningKey() to verifyWith()
             .build()

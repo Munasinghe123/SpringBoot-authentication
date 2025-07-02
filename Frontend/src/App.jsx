@@ -1,10 +1,11 @@
 
 import {BrowserRouter as Router, Routes,Route} from 'react-router-dom'
 
-import Home from "./Home";
+import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from './pages/Register';
-import DashBoarad from './DashBoard';
+import DashBoarad from './pages/DashBoard';
+import EmailCheck from './Components/EmailCheck';
 
 function App(){
 
@@ -15,6 +16,7 @@ function App(){
         <Route path="/login" element={<Login/>}/>
         <Route path='/register' element={<Register/>}/>
         <Route path='/dashboard' element={<DashBoarad/>}/>
+        <Route path='/email-check' element={<EmailCheck/>}/>
       </Routes>
     </Router>
   )

@@ -45,12 +45,12 @@ public class SecurityConfig {
             .cors(Customizer.withDefaults())
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/auth/register", "/auth/login").permitAll()
+                .requestMatchers("/auth/register", "/auth/login","/auth/me","/auth/logout").permitAll()
                 .anyRequest().authenticated())
             .authenticationProvider(authProvider)
             .oauth2Login(oauth2 -> oauth2
                 .loginPage("http://localhost:5173/login")
-                .defaultSuccessUrl("http://localhost:5173/dashboard", true))
+                .defaultSuccessUrl("http://localhost:5173/email-check", true))
             .logout(logout -> logout
                 .logoutSuccessUrl("http://localhost:5173/")
                 .invalidateHttpSession(true)
